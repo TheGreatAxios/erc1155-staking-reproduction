@@ -7,21 +7,18 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TestToken is ERC1155, Ownable, ERC1155Burnable {
     constructor() ERC1155("") Ownable(msg.sender) {
-    	_mint(msg.sender, 1, 100, "");
-    	_mint(msg.sender, 2, 100, "");
-    	_mint(msg.sender, 3, 100, "");
-    	_mint(msg.sender, 4, 100, "");
-    	_mint(msg.sender, 5, 100, "");
+        _mint(msg.sender, 1, 100, "");
+        _mint(msg.sender, 2, 100, "");
+        _mint(msg.sender, 3, 100, "");
+        _mint(msg.sender, 4, 100, "");
+        _mint(msg.sender, 5, 100, "");
     }
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
     }
 
-    function mint(address account, uint256 id, uint256 amount, bytes memory data)
-        public
-        onlyOwner
-    {
+    function mint(address account, uint256 id, uint256 amount, bytes memory data) public onlyOwner {
         _mint(account, id, amount, data);
     }
 

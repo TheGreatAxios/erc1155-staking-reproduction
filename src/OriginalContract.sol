@@ -25,7 +25,9 @@ contract ERC1155StakeandBurnCityBuilderXpert is Ownable, ERC165, IERC1155Receive
         _;
     }
 
-    event TokenStaked(address indexed staker, address indexed tokenAddress, uint256 indexed tokenId, uint256 amount, uint256 stakedAt);
+    event TokenStaked(
+        address indexed staker, address indexed tokenAddress, uint256 indexed tokenId, uint256 amount, uint256 stakedAt
+    );
     event TokenUnstaked(address indexed staker, address indexed tokenAddress, uint256 indexed tokenId, uint256 amount);
     event TokenBurned(address indexed burner, address indexed tokenAddress, uint256 indexed tokenId, uint256 amount);
     event UnstakingDelayUpdated(uint256 newDelay);
@@ -47,25 +49,22 @@ contract ERC1155StakeandBurnCityBuilderXpert is Ownable, ERC165, IERC1155Receive
     }
 
     function stakeERC1155(address tokenAddress, uint256 tokenId, uint256 amount) external {
-    require(amount > 0, "Amount must be greater than 0");
-    require(IERC1155(tokenAddress).balanceOf(msg.sender, tokenId) >= amount, "Insufficient token balance");
+        require(amount > 0, "Amount must be greater than 0");
+        require(IERC1155(tokenAddress).balanceOf(msg.sender, tokenId) >= amount, "Insufficient token balance");
 
-    // Log approval check
-    bool isApproved = IERC1155(tokenAddress).isApprovedForAll(msg.sender, address(this));
-    require(isApproved, "Contract is not approved");
+        // Log approval check
+        bool isApproved = IERC1155(tokenAddress).isApprovedForAll(msg.sender, address(this));
+        require(isApproved, "Contract is not approved");
 
-    // Transfer tokens
-    IERC1155(tokenAddress).safeTransferFrom(msg.sender, address(this), tokenId, amount, "");
+        // Transfer tokens
+        IERC1155(tokenAddress).safeTransferFrom(msg.sender, address(this), tokenId, amount, "");
 
-    stakedBalances[msg.sender][tokenId] += amount;
+        stakedBalances[msg.sender][tokenId] += amount;
 
-    stakingRecords[msg.sender][tokenId].push(StakedRecord({
-        amount: amount,
-        stakedAt: block.timestamp
-    }));
+        stakingRecords[msg.sender][tokenId].push(StakedRecord({amount: amount, stakedAt: block.timestamp}));
 
-    emit TokenStaked(msg.sender, tokenAddress, tokenId, amount, block.timestamp);
-}
+        emit TokenStaked(msg.sender, tokenAddress, tokenId, amount, block.timestamp);
+    }
 
     function unstakeERC1155(address tokenAddress, uint256 tokenId, uint256 amount) external {
         require(stakedBalances[msg.sender][tokenId] >= amount, "Insufficient balance");
@@ -112,13 +111,11 @@ contract ERC1155StakeandBurnCityBuilderXpert is Ownable, ERC165, IERC1155Receive
     }
 
     // Implementation of the IERC1155Receiver interface
-    function onERC1155Received(
-        address operator,
-        address from,
-        uint256 id,
-        uint256 value,
-        bytes calldata data
-    ) external override returns (bytes4) {
+    function onERC1155Received(address operator, address from, uint256 id, uint256 value, bytes calldata data)
+        external
+        override
+        returns (bytes4)
+    {
         return this.onERC1155Received.selector;
     }
 

@@ -48,7 +48,6 @@ contract ERC1155StakeandBurnCityBuilderXpertTest is Test, ERC1155Holder {
         assertEq(stakeTimestamp, block.timestamp);
 
         builder.unstakeERC1155(address(testToken), 1, 1);
-
     }
 
     function test_Unstake1() public {
@@ -76,7 +75,6 @@ contract ERC1155StakeandBurnCityBuilderXpertTest is Test, ERC1155Holder {
         (uint256 amountStaked2, uint256 stakeTimestamp2) = builder.stakingRecords(address(this), 1, 0);
         assertEq(amountStaked2, 0);
         assertEq(stakeTimestamp2, 1); // Note Timestamp is not removed
-
     }
 
     function test_Stake5() public {
@@ -92,6 +90,4 @@ contract ERC1155StakeandBurnCityBuilderXpertTest is Test, ERC1155Holder {
         assertEq(amountStaked, 5);
         assertEq(stakeTimestamp, block.timestamp);
     }
-
-
 }
